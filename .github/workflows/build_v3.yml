@@ -10,9 +10,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout v3.2.0 tag
+      - name: Checkout v3.2.0 tag (from upstream repo)
         uses: actions/checkout@v4
         with:
+          repository: DevEmperor/DictateKeyboard
           ref: v3.2.0
 
       - name: Set up JDK 17
