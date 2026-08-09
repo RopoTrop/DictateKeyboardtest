@@ -25,6 +25,39 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
+      - name: Add placeholder google-services.json
+        # v3.2.0 wires in Firebase Crashlytics for crash reporting, which needs a
+        # google-services.json tied to a real Firebase project. Since it's only used
+        # in error-handling paths (not core app functionality), a syntactically valid
+        # placeholder is enough to satisfy the build-time plugin - crash reports just
+        # won't actually go anywhere, which is fine for a local test build.
+        run: |
+          cat > app/google-services.json << 'EOF'
+          {
+            "project_info": {
+              "project_number": "000000000000",
+              "project_id": "dummy-project",
+              "storage_bucket": "dummy-project.appspot.com"
+            },
+            "client": [
+              {
+                "client_info": {
+                  "mobilesdk_app_id": "1:000000000000:android:0000000000000000",
+                  "android_client_info": {
+                    "package_name": "net.devemperor.dictate"
+                  }
+                },
+                "oauth_client": [],
+                "api_key": [
+                  { "current_key": "AIzaSyDUMMYKEYDUMMYKEYDUMMYKEYDUMMYK12" }
+                ],
+                "services": { "appinvite_service": { "other_platform_oauth_client": [] } }
+              }
+            ],
+            "configuration_version": "1"
+          }
+          EOF
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
